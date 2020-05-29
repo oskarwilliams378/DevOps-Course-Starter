@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+{% block title %}To-Do App{% endblock %}
+
+{% block content %}
+  <div class="jumbotron">
+    <p class="lead">Add an item.</p>
+  </div>
+
+    <form action="/AddItem/Save" method="post">
+        <label for="title">Insert a title</label>
+        <input name="title" id="title" type="text">
+        <button type="submit">Save</button>
+    </form>
+{% endblock %}
