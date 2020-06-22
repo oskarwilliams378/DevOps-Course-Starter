@@ -1,6 +1,5 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, url_for
 from helpers.trello_wrapper import get_items, create_new_item, move_item_to_doing, move_item_to_done, archive_item
-
 
 trelloUrl = 'https://api.trello.com'
 baseTrelloQuery = ''
@@ -27,7 +26,8 @@ def add_item_save():
     if not title:
         return redirect('/AddItem')
     description = request.form.get('description')
-    create_new_item(title, description)
+    due_date = request.form.get('due_date')
+    create_new_item(title, description, due_date)
     return redirect('/')
 
 
