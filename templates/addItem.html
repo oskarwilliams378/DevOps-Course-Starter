@@ -2,15 +2,24 @@
 {% block title %}To-Do App{% endblock %}
 
 {% block content %}
-  <div class="jumbotron">
-    <p class="lead">Add an item.</p>
-  </div>
+    <div class="jumbotron">
+        <h1 class="display-6">Add an item</h1>
+    </div>
 
     <form action="/AddItem/Save" method="post">
-        <label for="title">Insert a title</label>
-        <input name="title" id="title" type="text" required />
-        <label for="description">Add a description</label>
-        <input name="description" id="title" type="text"/>
-        <button type="submit">Save</button>
+        <div class="input-group input-group-lg mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroup-sizing-lg">Title</span>
+            </div>
+            <input type="text" class="form-control" aria-label="Large" aria-describedby="inputGroup-sizing-sm"
+                   name="title">
+        </div>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">With textarea</span>
+            </div>
+            <textarea class="form-control" aria-label="With textarea" name="description"></textarea>
+        </div>
+        <button type="submit" class="btn btn-success col-md-2">Save</button>
     </form>
 {% endblock %}
