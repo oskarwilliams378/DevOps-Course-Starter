@@ -6,6 +6,7 @@ class Item(object):
     def __init__(self, card):
         self.id = card['id']
         self.title = card['name']
+        self.description = card['desc']
         self.deleted = False
 
         if card['idList'] == TODO_ID:

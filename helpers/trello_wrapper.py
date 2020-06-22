@@ -18,10 +18,11 @@ def get_items():
     return items
 
 
-def create_new_item(title):
+def create_new_item(title, description):
     query = {
         'idList': TODO_ID,
-        'name': title
+        'name': title,
+        'desc': description
     }
     return __send_trello('POST', '/1/card', query)
 

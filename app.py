@@ -26,7 +26,8 @@ def add_item_save():
     title = request.form.get('title')
     if not title:
         return redirect('/AddItem')
-    create_new_item(title)
+    description = request.form.get('description')
+    create_new_item(title, description)
     return redirect('/')
 
 

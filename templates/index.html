@@ -9,33 +9,36 @@
     </div>
 
     <form action="/StartItem" method="post">
+    <div class="container">
         <div class="row">
             <div class="col-md-12">
                 <h2>Items</h2>
                 <ul class="list-group mb-4">
                     {% for item in items %}
-                        <li>
-                            {{ item.title }} -- {{ item.status }}
-                        </li>
+                        <li class="list-group-item">
+                            <b>{{ item.title }}</b> -- {{ item.status }}
+                            <p>{{ item.description  }}</p>
                         {% if item.status == 'Not Started' %}
-                            <button name="id" value="{{ item.id }}" style="max-width: 150px">
+                            <button name="id" value="{{ item.id }}" class="btn btn-primary col-sm-2">
                                 Start task
                             </button>
                         {% elif item.status == 'In Progress' %}
-                            <button name="id" value="{{ item.id }}" style="max-width: 150px" formaction="/CompleteItem">
+                            <button name="id" value="{{ item.id }}" class="btn btn-success col-md-2" formaction="/CompleteItem">
                                 Complete task
                             </button>
                         {% elif item.status == 'Completed' %}
-                            <button name="id" value="{{ item.id }}" style="max-width: 75px">
+                            <button name="id" value="{{ item.id }}" class="btn btn-secondary col-md-2">
                                 Restart task
                             </button>
-                            <button name="id" value="{{ item.id }}" style="max-width: 75px" formaction="/RemoveItem">
+                            <button name="id" value="{{ item.id }}" class="btn btn-danger col-md-2" formaction="/RemoveItem">
                                 Remove task
                             </button>
                         {% endif %}
+                        </li>
                     {% endfor %}
                 </ul>
             </div>
         </div>
+    </div>
     </form>
 {% endblock %}
