@@ -114,3 +114,10 @@ env/
 
 ### Configuration files ###
 .env
+
+### Add pycharm config files
+.idea/misc.xml
+.idea/modules.xml
+.idea/vcs.xml
+.idea/inspectionProfiles/profiles_settings.xml
+.idea/DevOps-Course-Starter.iml

@@ -8,7 +8,7 @@
         <a href="AddItem">Add another item</a>
     </div>
 
-    <form action="/EditItem" method="post">
+    <form action="/CompleteItem" method="post">
         <div class="row">
             <div class="col-md-12">
                 <h2>Items</h2>
@@ -16,10 +16,10 @@
                     {% for item in items %}
                         <li>{{ item.title }} -- {{ item.status }}</li>
                             {% if item.status == 'Not Started' %}
-                                <button name="complete_id" value="{{ item.id }}" style="max-width: 150px">Complete task</button>
+                                <button name="id" value="{{ item.id }}" style="max-width: 150px">Complete task</button>
                             {% endif %}
                             {% if item.status == 'Completed' %}
-                                <button name="remove_id" value="{{ item.id }}" style="max-width: 150px">Remove task</button>
+                                <button name="id" value="{{ item.id }}" style="max-width: 150px" formaction="/RemoveItem">Remove task</button>
                             {% endif %}
                     {% endfor %}
                 </ul>
