@@ -8,19 +8,31 @@
         <a href="AddItem">Add another item</a>
     </div>
 
-    <form action="/CompleteItem" method="post">
+    <form action="/StartItem" method="post">
         <div class="row">
             <div class="col-md-12">
                 <h2>Items</h2>
                 <ul class="list-group mb-4">
                     {% for item in items %}
-                        <li>{{ item.title }} -- {{ item.status }}</li>
-                            {% if item.status == 'Not Started' %}
-                                <button name="id" value="{{ item.id }}" style="max-width: 150px">Complete task</button>
-                            {% endif %}
-                            {% if item.status == 'Completed' %}
-                                <button name="id" value="{{ item.id }}" style="max-width: 150px" formaction="/RemoveItem">Remove task</button>
-                            {% endif %}
+                        <li>
+                            {{ item.title }} -- {{ item.status }}
+                        </li>
+                        {% if item.status == 'Not Started' %}
+                            <button name="id" value="{{ item.id }}" style="max-width: 150px">
+                                Start task
+                            </button>
+                        {% elif item.status == 'In Progress' %}
+                            <button name="id" value="{{ item.id }}" style="max-width: 150px" formaction="/CompleteItem">
+                                Complete task
+                            </button>
+                        {% elif item.status == 'Completed' %}
+                            <button name="id" value="{{ item.id }}" style="max-width: 75px">
+                                Restart task
+                            </button>
+                            <button name="id" value="{{ item.id }}" style="max-width: 75px" formaction="/RemoveItem">
+                                Remove task
+                            </button>
+                        {% endif %}
                     {% endfor %}
                 </ul>
             </div>

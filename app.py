@@ -1,5 +1,9 @@
-from flask import Flask, render_template, request, redirect, url_for
-from session_items import get_items, get_item, add_item, save_item, delete_item
+from flask import Flask, render_template, request, redirect
+from helpers.trello_wrapper import get_items, create_new_item, move_item_to_doing, move_item_to_done, archive_item
+
+
+trelloUrl = 'https://api.trello.com'
+baseTrelloQuery = ''
 
 app = Flask(__name__)
 app.config.from_object('flask_config.Config')
@@ -8,7 +12,7 @@ app.config.from_object('flask_config.Config')
 @app.route('/')
 def index():
     items = get_items()
-    sorted_items = sorted(items, key=lambda item: item['status'], reverse=True)
+    sorted_items = sorted(items, key=lambda item: item.status, reverse=True)
     return render_template('index.html', items=sorted_items)
 
 
@@ -22,7 +26,16 @@ def add_item_save():
     title = request.form.get('title')
     if not title:
         return redirect('/AddItem')
-    add_item(title)
+    create_new_item(title)
+    return redirect('/')
+
+
+@app.route('/StartItem', methods=['POST'])
+def start_item():
+    item_id = request.form.get('id')
+    if not item_id:
+        return redirect('/')
+    move_item_to_doing(item_id)
     return redirect('/')
 
 
@@ -30,10 +43,8 @@ def add_item_save():
 def complete_item():
     item_id = request.form.get('id')
     if not item_id:
-        return redirect('/AddItem')
-    item = get_item(item_id)
-    item['status'] = 'Completed'
-    save_item(item)
+        return redirect('/')
+    move_item_to_done(item_id)
     return redirect('/')
 
 
@@ -41,8 +52,8 @@ def complete_item():
 def remove_item():
     item_id = request.form.get('id')
     if not item_id:
-        return redirect('/AddItem')
-    delete_item(item_id)
+        return redirect('/')
+    archive_item(item_id)
     return redirect('/')
 
 
