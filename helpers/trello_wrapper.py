@@ -1,60 +1,61 @@
 import os
 import requests
 
-from config.trello_config import BOARD_ID, TODO_LIST_ID, DOING_LIST_ID, DONE_LIST_ID
 from classes.to_do_item import Item
 
-trelloUrl = 'https://api.trello.com'
 
-
-def get_items():
-    cards = __send_trello_request('GET', f'/1/boards/{BOARD_ID}/cards', {}).json()
-    items = []
-    for card in cards:
-        item = Item(card)
-        if not item.deleted:
-            items.append(item)
-
-    return items
-
-
-def create_new_item(title, description, due_date):
+class TrelloWrapper:
+    __board_id = os.getenv("BOARD_ID")
     query = {
-        'idList': TODO_LIST_ID,
-        'name': title,
-        'desc': description,
-        'due': due_date
-    }
-    return __send_trello_request('POST', '/1/card', query)
-
-
-def move_item_to_doing(item_id):
-    query = {
-        'idList': DOING_LIST_ID
-    }
-    return __send_trello_request('PUT', f'/1/cards/{item_id}', query)
-
-
-def move_item_to_done(item_id):
-    query = {
-        'idList': DONE_LIST_ID
-    }
-    return __send_trello_request('PUT', f'/1/cards/{item_id}', query)
-
-
-def archive_item(item_id):
-    query = {
-        'closed': 'true'
-    }
-    return __send_trello_request('PUT', f'/1/cards/{item_id}', query)
-
-
-def __send_trello_request(method, suffix, query):
-    query['key'] = os.getenv("TRELLO_KEY")
-    query['token'] = os.getenv("TRELLO_TOKEN")
-
-    headers = {
-        'Accept': 'application/json'
+        'key': os.getenv("TRELLO_KEY"),
+        'token': os.getenv("TRELLO_TOKEN")
     }
 
-    return requests.request(method, trelloUrl + suffix, params=query, headers=headers)
+    def __init__(self):
+        lists = self.get_lists()
+        self.__to_do_list = next(list for list in lists if list['name'] == "To Do")
+        self.__doing_list = next(list for list in lists if list['name'] == "Doing")
+        self.__done_list = next(list for list in lists if list['name'] == "Done")
+
+    def get_items(self):
+        cards = self.__send_trello_request('GET', f'/boards/{self.__board_id}/cards').json()
+        items = []
+        for card in cards:
+            item = Item(card, self.__to_do_list, self.__doing_list, self.__done_list)
+            if not item.deleted:
+                items.append(item)
+
+        return items
+
+    def get_lists(self):
+        return self.__send_trello_request('GET', f'/boards/{self.__board_id}/lists').json()
+
+    def create_new_item(self, title, description, due_date):
+        self.query['idList'] = self.__to_do_list['id']
+        self.query['name'] = title
+        self.query['desc'] = description
+        self.query['due'] = due_date
+
+        return self.__send_trello_request('POST', '/card')
+
+    def move_item_to_doing(self, item_id):
+        self.query['idList'] = self.__doing_list['id']
+
+        return self.__send_trello_request('PUT', f'/cards/{item_id}')
+
+    def move_item_to_done(self, item_id):
+        self.query['idList'] = self.__done_list['id']
+
+        return self.__send_trello_request('PUT', f'/cards/{item_id}')
+
+    def archive_item(self, item_id):
+        self.query['closed'] = 'true'
+        return self.__send_trello_request('PUT', f'/cards/{item_id}')
+
+    def __send_trello_request(self, method, suffix):
+        trello_url = 'https://api.trello.com/1'
+        headers = {
+            'Accept': 'application/json'
+        }
+
+        return requests.request(method, trello_url + suffix, params=self.query, headers=headers)
