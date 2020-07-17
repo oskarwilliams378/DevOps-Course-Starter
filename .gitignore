@@ -117,3 +117,4 @@ env/
 
 ### Add pycharm config files
 .idea/*
+.run/
