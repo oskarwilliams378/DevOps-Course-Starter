@@ -49,8 +49,14 @@ class MockCardsResponse:
         return cards
 
 
+class MockPostResponse:
+    @staticmethod
+    def json():
+        return ""
+
+
 @pytest.fixture()
-def monkeypatch_fixture(monkeypatch):
+def mock_get_requests(monkeypatch):
     def mock_get(*args, **kwargs):
         if args[1] == 'https://api.trello.com/1/boards/board-id/lists':
             return MockListsResponse
@@ -58,3 +64,31 @@ def monkeypatch_fixture(monkeypatch):
             return MockCardsResponse
 
     monkeypatch.setattr(requests, "request", mock_get)
+
+
+@pytest.fixture()
+def mock_post_requests(monkeypatch):
+    calls = []
+
+    def mock_post(*args, **kwargs):
+        if args[1] == 'https://api.trello.com/1/boards/board-id/lists':
+            return MockListsResponse
+        elif args[1] == 'https://api.trello.com/1/boards/board-id/cards':
+            return MockCardsResponse
+        elif args[1] == 'https://api.trello.com/1/card':
+            calls.append(dict(
+                method="POST",
+                endpoint="card",
+                params=kwargs["params"]
+            ))
+            return MockPostResponse
+        elif args[1] == 'https://api.trello.com/1/cards/1':
+            calls.append(dict(
+                method="PUT",
+                endpoint="cards/1",
+                params=kwargs["params"]
+            ))
+            return MockPostResponse
+
+    monkeypatch.setattr(requests, "request", mock_post)
+    return calls
