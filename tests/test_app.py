@@ -4,7 +4,7 @@ import pytest
 class TestApp:
 
     @staticmethod
-    def test_index_page(client):
+    def test_index_page_mocking_requests(monkeypatch_fixture, client):
         response = client.get('/')
         assert response.status_code == 200
         response_data = response.data.decode("utf-8")

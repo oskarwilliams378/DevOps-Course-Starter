@@ -3,12 +3,11 @@ import requests
 from datetime import datetime, timedelta
 from dotenv import find_dotenv, load_dotenv
 from app import create_app
-import os
 
 
 @pytest.fixture
 def client():
-    file_path = find_dotenv('../.env.test')
+    file_path = find_dotenv('.env.test')
     load_dotenv(file_path, override=True)
 
     test_app = create_app()
@@ -50,7 +49,7 @@ class MockCardsResponse:
         return cards
 
 
-@pytest.fixture(autouse=True)
+@pytest.fixture()
 def monkeypatch_fixture(monkeypatch):
     def mock_get(*args, **kwargs):
         if args[1] == 'https://api.trello.com/1/boards/board-id/lists':

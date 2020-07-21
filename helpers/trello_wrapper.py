@@ -51,10 +51,31 @@ class TrelloWrapper:
         self.query['closed'] = 'true'
         return self.__send_trello_request('PUT', f'/cards/{item_id}')
 
+    def create_list(self, name: str):
+        self.query['name'] = name
+        self.query['idBoard'] = self.__board_id
+        return self.__send_trello_request('POST', f'/lists').json()
+
+    def create_board(self, name: str):
+        self.query['name'] = name
+        return self.__send_trello_request('POST', f'/boards').json()['id']
+
+    def create_board_with_lists(self, name: str):
+        self.__board_id = self.create_board(name)
+        self.create_list('To Do')
+        self.create_list('Doing')
+        self.create_list('Done')
+        return self.__board_id
+
+    def delete_board(self, board_id: str):
+        self.__send_trello_request('DELETE', f'/boards/{self.__board_id}')
+        return
+
     def __send_trello_request(self, method: str, suffix: str):
         trello_url = 'https://api.trello.com/1'
         headers = {
             'Accept': 'application/json'
         }
 
-        return requests.request(method, trello_url + suffix, params=self.query, headers=headers)
+        response = requests.request(method, trello_url + suffix, params=self.query, headers=headers)
+        return response
