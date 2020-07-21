@@ -118,3 +118,5 @@ env/
 ### Add pycharm config files
 .idea/*
 .run/
+geckodriver.log
+geckodriver.exe
