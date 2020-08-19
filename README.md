@@ -30,6 +30,10 @@ You should see output similar to the following:
 ```
 Now visit [`http://localhost:5000/`](http://localhost:5000/) in your web browser to view the app.
 
+### Environment variables
+
+In the .env file add your user Trello Key and Token (found [here](https://trello.com/app-key)) and the Board ID of the board you are accessing.
+
 ## Testing
 
 The project uses pytest and selenium to perform unit tests, integration tests, and e2e tests.
