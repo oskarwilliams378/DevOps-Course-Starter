@@ -118,5 +118,10 @@ env/
 ### Add pycharm config files
 .idea/*
 .run/
+
+### Add geckodriver files
 geckodriver.log
 geckodriver.exe
+
+### Add Vagrant files
+.vagrant/*
