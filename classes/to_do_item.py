@@ -1,4 +1,5 @@
-import dateutil.parser
+from dateutil import parser
+from datetime import datetime
 
 
 class Item(object):
@@ -8,9 +9,16 @@ class Item(object):
         self.title = card['name']
         self.description = card['desc']
         if card['due']:
-            date = dateutil.parser.parse(card['due'])
-            self.due_date = date.strftime('%d/%m/%Y')
+            date = parser.isoparse(card['due']).replace(tzinfo=None)
+            self.due_date = datetime.date(date)
+            self.due_date_string = date.strftime('%d/%m/%Y')
+        else:
+            self.due_date = datetime.date(datetime.today().replace(tzinfo=None))
         self.deleted = False
+        if card['dateLastActivity']:
+            date = parser.isoparse(card['dateLastActivity']).replace(tzinfo=None)
+            self.completed_on = datetime.date(date)
+            self.completed_on_string = date.strftime('%d/%m/%Y')
 
         if card['idList'] == to_do_list['id']:
             self.status = 'Not Started'

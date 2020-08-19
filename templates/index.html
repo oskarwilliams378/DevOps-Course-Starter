@@ -21,38 +21,66 @@
                         </div>
                     </div>
                     <ul class="list-group mb-4">
-                        {% for item in items %}
+                        {% for item in view_model.to_do_items %}
                             <li class="list-group-item">
                                 <div class="row">
                                     <div class="col-md-10">
                                         <b>{{ item.title }}</b> -- {{ item.status }}
                                         <p>{{ item.description }}</p>
-                                        {% if item.status == 'Not Started' %}
                                             <button name="id" value="{{ item.id }}" class="btn btn-primary col-sm-2">
                                                 Start task
                                             </button>
-                                        {% elif item.status == 'In Progress' %}
+                                    </div>
+                                    <div class="col-md-2" style="text-align: right">
+                                        <b>{{ item.due_date_string }}</b>
+                                    </div>
+                                </div>
+                            </li>
+                        {% endfor %}
+                        {% for item in view_model.doing_items %}
+                            <li class="list-group-item">
+                                <div class="row">
+                                    <div class="col-md-10">
+                                        <b>{{ item.title }}</b> -- {{ item.status }}
+                                        <p>{{ item.description }}</p>
                                             <button name="id" value="{{ item.id }}" class="btn btn-success col-md-2"
                                                     formaction="/CompleteItem">
                                                 Complete task
                                             </button>
-                                        {% elif item.status == 'Completed' %}
-                                            <button name="id" value="{{ item.id }}" class="btn btn-secondary col-md-2">
-                                                Restart task
-                                            </button>
-                                            <button name="id" value="{{ item.id }}" class="btn btn-danger col-md-2"
-                                                    formaction="/RemoveItem">
-                                                Remove task
-                                            </button>
-                                        {% endif %}
                                     </div>
                                     <div class="col-md-2" style="text-align: right">
-                                        <b>{{ item.due_date }}</b>
+                                        <b>{{ item.due_date_string }}</b>
+                                    </div>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    {% set done_items = view_model.done_items if view_model.show_all_done_items else view_model.recent_done_items %}
+                        {% for item in done_items %}
+                            <li class="list-group-item">
+                                <div class="row">
+                                    <div class="col-md-10">
+                                        <b>{{ item.title }}</b> -- {{ item.status }}
+                                        <p>{{ item.description }}</p>
+                                        <button name="id" value="{{ item.id }}" class="btn btn-secondary col-md-2">
+                                            Restart task
+                                        </button>
+                                        <button name="id" value="{{ item.id }}" class="btn btn-danger col-md-2"
+                                                formaction="/RemoveItem">
+                                            Remove task
+                                        </button>
+                                    </div>
+                                    <div class="col-md-2" style="text-align: right">
+                                        <b>{{ item.due_date_string }}</b>
                                     </div>
                                 </div>
                             </li>
                         {% endfor %}
                     </ul>
+
+                                        <button name="show_completed" value="{{ view_model.show_all_done_items }}" class="btn btn-danger col-md-2"
+                                                formaction="/ShowCompleted">
+                                            Show all completed tasks
+                                        </button>
                 </div>
             </div>
         </div>
