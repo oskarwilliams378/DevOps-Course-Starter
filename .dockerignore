@@ -1,0 +1,11 @@
+.vagrant/
+env/
+tests/
+tests_selenium/
+.env*
+.gitignore
+.git/
+.idea/
+
+session_items.py
+Vagrantfile

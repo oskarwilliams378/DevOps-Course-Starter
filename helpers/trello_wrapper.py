@@ -7,10 +7,7 @@ from classes.to_do_item import Item
 class TrelloWrapper:
     def __init__(self):
         self.__board_id = os.getenv("BOARD_ID")
-        self.query = {
-            'key': os.getenv("TRELLO_KEY"),
-            'token': os.getenv("TRELLO_TOKEN")
-        }
+        self.__set_base_query()
         lists = self.get_lists()
         self.__to_do_list = next(list for list in lists if list['name'] == "To Do")
         self.__doing_list = next(list for list in lists if list['name'] == "Doing")
@@ -78,4 +75,11 @@ class TrelloWrapper:
         }
 
         response = requests.request(method, trello_url + suffix, params=self.query, headers=headers)
+        self.__set_base_query()
         return response
+
+    def __set_base_query(self):
+        self.query = {
+            'key': os.getenv("TRELLO_KEY"),
+            'token': os.getenv("TRELLO_TOKEN")
+        }
