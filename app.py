@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect
 
 from classes.index_view_model import IndexViewModel
 from helpers.trello_wrapper import TrelloWrapper
