@@ -1,0 +1,13 @@
+version: "3.8"
+
+services:
+  todo-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: prod
+    image: todo-app:prod
+    env_file:
+      - .env
+    ports:
+      - 8000:8000
