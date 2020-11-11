@@ -1,0 +1,10 @@
+language: generic
+
+services:
+  - docker
+
+env:
+ - TRELLO_KEY=dummy_key TRELLO_TOKEN=dummy_token FLASK_SKIP_DOTENV=true
+
+before_install:
+  - docker-compose -f docker-compose.test.yml up --build

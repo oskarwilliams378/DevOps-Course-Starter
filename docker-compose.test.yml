@@ -1,0 +1,13 @@
+version: "3.8"
+
+services:
+  todo-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: test
+    image: todo-app:test
+    env_file:
+      - .env.test
+    ports:
+      - 8000:8000

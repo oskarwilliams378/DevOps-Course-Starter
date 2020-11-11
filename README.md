@@ -1,16 +1,22 @@
 # DevOps Apprenticeship: Project Exercise
 
-## Getting started
+# Getting started
 
-The project uses a poetry to isolate package dependencies. To create the virtual environment and install required packages, run the following from a bash shell terminal:
+We use docker to run this project, make sure docker is installed locally.
 
-```bash
-$ poetry install
+## Environment variables
+
+Create copies of the `.env.template` file named as `.env` and `.env.development`.
+To these files add your user Trello Key and Token (found [here](https://trello.com/app-key)), 
+and the Board ID of the board you are accessing. This will setup the environment variables for both running
+as dev and as prod.
+
+## Running dev
+
+
+To run the tests in docker run the command:
 ```
-
-Once the setup script has completed and all packages have been installed, start the Flask app by running:
-```bash
-$ poetry run flask run
+docker-compose -f docker-compose.development.yml up --build
 ```
 
 You should see output similar to the following:
@@ -18,20 +24,33 @@ You should see output similar to the following:
  * Serving Flask app "app" (lazy loading)
  * Environment: development
  * Debug mode: on
- * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+ * Running on http://0.0.0.0:8000/ (Press CTRL+C to quit)
  * Restarting with fsevents reloader
  * Debugger is active!
  * Debugger PIN: 226-556-590
 ```
-Now visit [`http://localhost:5000/`](http://localhost:5000/) in your web browser to view the app.
+Now visit [`http://localhost:8000/`](http://localhost:8000/) in your web browser to view the app.
 
-### Environment variables
+## Running prod
 
-In the .env file add your user Trello Key and Token (found [here](https://trello.com/app-key)) and the Board ID of the board you are accessing.
 
-## Testing
+To run the tests in docker run the command:
+```
+docker-compose -f docker-compose.yml up --build
+```
 
-The project uses pytest and selenium to perform unit tests, integration tests, and e2e tests.
+# Testing
+
+The project uses pytest and selenium to perform unit tests, integration tests, and e2e tests. These can be run locally or using docker.
+
+## Docker
+
+To run the tests in docker run the command:
+```
+docker-compose -f docker-compose.test.yml up --build
+```
+
+## Locally
 
 ### Setup
 
