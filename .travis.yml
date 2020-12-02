@@ -4,6 +4,6 @@ env:
   - secure: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCosJY7wC/4ijdzaj3NP7bYbOrgfXLWlqbm7Xq43WmZOxbjLLA0nmQh0wTism2MAf7E4DyscJTzF6AMQdphKgUiN5HwgEIgSEKrDl6VcXZWEjqDV1+FMWwp504r8rlPj6ly1H2zKcTQA4F2SXXiXwuOTyzQ5KLtaEM8vafzCcsZ4hMwqCzWR9o/YpMD/Psxd7Ta2GhHhogyR/bTunwhTOVNQpCHfYIzC3Thzcs0T61hHVf20FttCuzO66o9QxfMvNxLX6jNkoYqaruXF0XxtC9g2rqHxQufvgzvMcr5Y787+ivv06n5HSTSRbirkMBj2ChHXOlYbwKC7hDoinPOCshGBwGSNSMcNXAQXA8bkLZqkHKeZalVwsYMLKTxyTJ6pWVsvOldw8HwOp8iQdZMIsAB6KhrQ8gr4zeGhFZhVGS4mplKk/1C8Jkj9tPsXQI17Gd743Bd6sBgLlCNfMtUzOs9LPidPR+aAl75vy2ucaL8wK/AgUGrlyP5zvlwgf6AP+lav8/P2AYE86fdQUhSBv4GkZz8cHu3dB1TkPdrAIol0gA82IJjDVcbyH9bDKkakbAxX1MR7BRiDsrIocRKiuiKs3xl1rdKl4cqPLojFJeq90YHldolNhtZ4oJm/7YSoNwjBhuivGxp/bo5u20XntK7SgmGW1j0qvQsJgKgT5o3zQ==
 
 script:
-- docker build --target test --tag todo-app-test .
+- docker build --target test --tag todo-app:test .
 - docker run todo-app:test tests
 - docker run -e TRELLO_KEY -e TRELLO_TOKEN -e BOARD_ID todo-app:test tests_selenium
