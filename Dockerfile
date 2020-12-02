@@ -6,11 +6,7 @@ COPY poetry.lock pyproject.toml /code/
 RUN poetry install --no-root --no-dev
 
 FROM base as prod
-COPY classes/. /code/classes/
-COPY helpers/. /code/helpers/
-COPY static/css/. /code/static/css/
-COPY templates/. /code/templates.
-COPY app.py flask_config.py /code/
+COPY . /code/
 ENTRYPOINT ["poetry", "run", "gunicorn", "app:create_app()", "--bind", "0.0.0.0:8000"]
 
 FROM base as dev
@@ -18,7 +14,6 @@ ENTRYPOINT poetry run flask run -h 0.0.0.0 -p 8000
 
 FROM base as test
 COPY . /code/
-RUN ls
 
 # Install Chrome
 RUN curl -sSL https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -o chrome.deb &&\

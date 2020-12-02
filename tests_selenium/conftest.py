@@ -7,11 +7,6 @@ from selenium import webdriver
 from dotenv import find_dotenv, load_dotenv
 
 
-# @pytest.fixture(scope="module")
-# def driver():
-#     with webdriver.Firefox() as driver:
-#         yield driver
-
 @pytest.fixture(scope='module')
 def driver():
     opts = webdriver.ChromeOptions()

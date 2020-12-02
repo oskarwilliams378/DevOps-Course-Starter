@@ -1,0 +1,10 @@
+.vagrant/
+env/
+.env
+.env.development
+.gitignore
+.git/
+.idea/
+
+session_items.py
+Vagrantfile
