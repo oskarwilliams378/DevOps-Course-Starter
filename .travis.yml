@@ -13,7 +13,7 @@ before_script:
   - docker run -e TRELLO_KEY -e TRELLO_TOKEN -e BOARD_ID -e SECRET_KEY todo-app:test tests_selenium
 
 script:
-  - echo $DOCKER_PASSWORD | docker login --username oskwil --password-stdin
+  - echo "$DOCKER_PASSWORD" | docker login --username oskwil --password-stdin
   - docker build --target prod --tag oskwil/todo-app:$TRAVIS_COMMIT .
   - docker build --target prod --tag oskwil/todo-app:latest .
   - docker push oskwil/todo-app:$TRAVIS_COMMIT
