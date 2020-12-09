@@ -1,8 +1,7 @@
 .vagrant/
 env/
-tests/
-tests_selenium/
-.env*
+.env
+.env.development
 .gitignore
 .git/
 .idea/

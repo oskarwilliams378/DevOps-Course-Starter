@@ -5,9 +5,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      target: prod
-    image: todo-app:prod
+      target: test
+    image: todo-app:test
     env_file:
-      - .env
+      - .env.test
     ports:
       - 8000:8000
