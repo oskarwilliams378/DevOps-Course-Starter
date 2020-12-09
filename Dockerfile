@@ -3,7 +3,7 @@ RUN pip install poetry
 EXPOSE 8000
 WORKDIR /code
 COPY poetry.lock pyproject.toml /code/
-RUN poetry install --no-root --no-dev
+RUN poetry config virtualenvs.create false --local && poetry install --no-root --no-dev
 
 FROM base as prod
 COPY . /code/
