@@ -7,7 +7,7 @@ RUN poetry install --no-root --no-dev
 
 FROM base as prod
 COPY . /code/
-ENTRYPOINT ["poetry", "run", "gunicorn", "app:create_app()", "--bind", "0.0.0.0:8000"]
+ENTRYPOINT "poetry run gunicorn app:create_app() --bind 0.0.0.0:$PORT"
 
 FROM base as dev
 ENTRYPOINT poetry run flask run -h 0.0.0.0 -p 8000
