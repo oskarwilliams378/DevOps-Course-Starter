@@ -7,7 +7,7 @@ RUN poetry config virtualenvs.create false --local && poetry install --no-root -
 
 FROM base as prod
 COPY . /code/
-ENTRYPOINT ["sh", "-c", "poetry run gunicorn 'app:create_app()' --bind 0.0.0.0:$PORT"]
+ENTRYPOINT ["./entrypoint.sh"]
 
 FROM base as dev
 ENTRYPOINT poetry run flask run -h 0.0.0.0 -p 8000
