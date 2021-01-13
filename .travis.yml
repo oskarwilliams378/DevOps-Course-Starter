@@ -5,7 +5,7 @@ env:
 
 branches:
   only:
-  - master
+  - exercise-8
 
 before_script:
   - docker build --target test --tag todo-app:test .
@@ -23,4 +23,4 @@ deploy:
   provider: script
   script: bash deploy.sh
   on:
-    branch: master
+    branch: exercise-8
