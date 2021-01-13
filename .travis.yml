@@ -5,7 +5,7 @@ env:
 
 branches:
   only:
-  - exercise-8
+  - master
 
 before_script:
   - echo "$DOCKER_PASSWORD" | docker login --username oskwil --password-stdin
@@ -24,4 +24,4 @@ deploy:
   provider: script
   script: bash deploy.sh
   on:
-    branch: exercise-8
+    branch: master
