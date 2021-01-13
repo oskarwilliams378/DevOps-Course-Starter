@@ -7,6 +7,7 @@ RUN poetry config virtualenvs.create false --local && poetry install --no-root -
 
 FROM base as prod
 COPY . /code/
+RUN chmod +x ./entrypoint.sh
 ENTRYPOINT ["./entrypoint.sh"]
 
 FROM base as dev
