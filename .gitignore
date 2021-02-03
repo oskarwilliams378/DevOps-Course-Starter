@@ -115,6 +115,7 @@ env/
 ### Configuration files ###
 .env
 .env.development
+.env.test
 
 ### Add pycharm config files
 .idea/*
