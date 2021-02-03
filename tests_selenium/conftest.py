@@ -1,8 +1,8 @@
 import pytest
-from threading import Thread
 import os
+from threading import Thread
 import app
-from helpers.trello_wrapper import TrelloWrapper
+from helpers.mongo_wrapper import MongoWrapper
 from selenium import webdriver
 from dotenv import find_dotenv, load_dotenv
 
@@ -21,17 +21,15 @@ def driver():
 def test_app():
     file_path = find_dotenv('.env')
     load_dotenv(file_path, override=True)
-    trello_wrapper = TrelloWrapper()
-    # Create the new board & update the board id environment variable
-    board_id = trello_wrapper.create_board_with_lists("test")
-    os.environ['BOARD_ID'] = board_id
     # construct the new application
+    mongo_db = MongoWrapper("").create_database("SeleniumTest")
+    os.environ['DEFAULT_DATABASE'] = "SeleniumTest"
     application = app.create_app()
     # start the app in its own thread.
     thread = Thread(target=lambda: application.run(use_reloader=False))
     thread.daemon = True
     thread.start()
-    yield app
+    yield application
     # Tear Down
     thread.join(1)
-    trello_wrapper.delete_board(board_id)
+    mongo_db.drop_database()

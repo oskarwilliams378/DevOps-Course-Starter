@@ -126,3 +126,5 @@ geckodriver.exe
 
 ### Add Vagrant files
 .vagrant/*
+
+tests_selenium/chromedriver.exe
