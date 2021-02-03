@@ -5,13 +5,13 @@ env:
 
 branches:
   only:
-    - master
+    - exercise-9
 
 script:
   - echo "$DOCKER_PASSWORD" | docker login --username oskwil --password-stdin
   - docker build --target test --tag todo-app:test .
   - docker run todo-app:test tests
-  - docker run -e TRELLO_KEY -e TRELLO_TOKEN -e BOARD_ID -e SECRET_KEY todo-app:test tests_selenium
+  - docker run -e USERNAME -e PASSWORD -e MONGO_URL -e SECRET_KEY todo-app:test tests_selenium
 
 before_deploy:
   - echo "$DOCKER_PASSWORD" | docker login --username oskwil --password-stdin
@@ -21,8 +21,8 @@ before_deploy:
   - docker push oskwil/todo-app:latest
 
 deploy:
-  if: master
+  if: exercise-9
   provider: script
   script: bash deploy.sh
   on:
-    branch: master
+    branch: exercise-9
