@@ -1,5 +1,4 @@
 import pytest
-import os
 import requests
 from datetime import datetime, timedelta
 from dotenv import find_dotenv, load_dotenv
@@ -66,10 +65,9 @@ def mock_requests(monkeypatch):
             endpoint=args[1],
             params=kwargs["params"]
         ))
-        board_id = os.getenv("BOARD_ID")
-        if args[1] == 'https://api.trello.com/1/boards/' + board_id + '/lists':
+        if args[1] == 'https://api.trello.com/1/boards/board-id/lists':
             return MockListsResponse
-        elif args[1] == 'https://api.trello.com/1/boards/' + board_id + '/cards':
+        elif args[1] == 'https://api.trello.com/1/boards/board-id/cards':
             return MockCardsResponse
         elif args[1] == 'https://api.trello.com/1/card':
             return MockPostResponse
