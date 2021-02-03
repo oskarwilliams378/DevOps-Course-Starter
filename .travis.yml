@@ -5,7 +5,7 @@ env:
 
 branches:
   only:
-    - exercise-9
+    - master
 
 script:
   - echo "$DOCKER_PASSWORD" | docker login --username oskwil --password-stdin
@@ -21,8 +21,8 @@ before_deploy:
   - docker push oskwil/todo-app:latest
 
 deploy:
-  if: exercise-9
+  if: master
   provider: script
   script: bash deploy.sh
   on:
-    branch: exercise-9
+    branch: master
