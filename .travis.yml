@@ -21,7 +21,7 @@ before_deploy:
   - docker push oskwil/todo-app:latest
 
 deploy:
-  if: branch = master
+  if: exercise-8
   provider: script
   script: bash deploy.sh
   on:

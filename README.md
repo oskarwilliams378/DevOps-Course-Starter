@@ -13,7 +13,7 @@ We use docker to run this project, make sure docker is installed locally.
 
 ##Environment variables
 
-Create copies of the `.env.template` file named as `.env` and `.env.development`.
+Create copies of the `.env.template` file named as `.env`, `.env.development`, and `.env.test`.
 To these files add your user Trello Key and Token (found [here](https://trello.com/app-key)), 
 and the Board ID of the board you are accessing. This will setup the environment variables for both running
 as dev and as prod.
