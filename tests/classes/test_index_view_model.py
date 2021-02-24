@@ -1,86 +1,83 @@
 import pytest
-
-from datetime import datetime, timedelta
+from datetime import datetime
 from classes.index_view_model import IndexViewModel
 from classes.to_do_item import Item
+
+todays_date = datetime(2001, 1, 10)
+old_date = datetime(2001, 1, 7)
 
 
 @pytest.fixture()
 def index_view_model():
-    to_do_list = {'id': '1'}
-    doing_list = {'id': '2'}
-    done_list = {'id': '3'}
     items = []
     for i in range(1, 9):
         card = {
-            'id': str(i),
+            '_id': str(i),
             'name': 'name ' + str(i),
             'desc': 'desc ' + str(i),
-            'due': (datetime.now() + timedelta(days=10)).isoformat(),
+            'due': '01/01/2019',
             'idList': '0',
-            'dateLastActivity' : None
+            'deleted': False
         }
         if i < 2:
-            card['idList'] = '1'
+            card['status'] = 'To Do'
         elif i < 4:
-            card['idList'] = '2'
+            card['status'] = 'Doing'
         elif i < 6:
-            card['idList'] = '3'
-            card['dateLastActivity'] = datetime.now().isoformat()
+            card['status'] = 'Done'
+            card['completedOn'] = todays_date
         else:
-            card['idList'] = '3'
-            card['dateLastActivity'] = (datetime.now() + timedelta(days=-3)).isoformat()
+            card['status'] = 'Done'
+            card['completedOn'] = old_date
 
-        item = Item(card, to_do_list, doing_list, done_list)
+        item = Item(card)
         items.append(item)
 
     return IndexViewModel(items, True)
 
 
-class TestIndexViewModel:
-    @staticmethod
-    def test_to_do_items_is_right_length(index_view_model: IndexViewModel):
-        assert len(index_view_model.to_do_items) == 1
+@pytest.fixture(autouse=True)
+def mock_datetime_today(monkeypatch):
+    def datetime_today(*args, **kwargs):
+        return todays_date
 
-    @staticmethod
-    def test_to_do_items_are_right_status(index_view_model: IndexViewModel):
-        assert all(item.status == 'Not Started' for item in index_view_model.to_do_items)
+    monkeypatch.setattr(IndexViewModel, "today", datetime_today)
 
-    @staticmethod
-    def test_doing_items_is_right_length(index_view_model: IndexViewModel):
-        assert len(index_view_model.doing_items) == 2
 
-    @staticmethod
-    def test_doing_items_are_right_status(index_view_model: IndexViewModel):
-        assert all(item.status == 'In Progress' for item in index_view_model.doing_items)
+def test_to_do_items_is_right_length(index_view_model: IndexViewModel):
+    assert len(index_view_model.to_do_items) == 1
 
-    @staticmethod
-    def test_done_items_is_right_length(index_view_model: IndexViewModel):
-        assert len(index_view_model.done_items) == 5
 
-    @staticmethod
-    def test_done_items_are_right_status(index_view_model: IndexViewModel):
-        assert all(item.status == 'Completed' for item in index_view_model.done_items)
+def test_to_do_items_are_right_status(index_view_model: IndexViewModel):
+    assert all(item.status == 'To Do' for item in index_view_model.to_do_items)
 
-    @staticmethod
-    def test_show_all_done_items_is_right_bool():
-        view_model_a = IndexViewModel([], True)
-        view_model_b = IndexViewModel([], False)
-        assert view_model_a.show_all_done_items
-        assert not view_model_b.show_all_done_items
 
-    @staticmethod
-    def test_recently_done_items_is_right_length(index_view_model: IndexViewModel):
-        assert len(index_view_model.recent_done_items) == 2
+def test_doing_items_is_right_length(index_view_model: IndexViewModel):
+    assert len(index_view_model.doing_items) == 2
 
-    @staticmethod
-    def test_recently_done_items_are_right_status(index_view_model: IndexViewModel):
-        assert all(item.status == 'Completed' for item in index_view_model.recent_done_items)
 
-    @staticmethod
-    def test_older_done_items_is_right_length(index_view_model: IndexViewModel):
-        assert len(index_view_model.older_done_items) == 3
+def test_doing_items_are_right_status(index_view_model: IndexViewModel):
+    assert all(item.status == 'Doing' for item in index_view_model.doing_items)
 
-    @staticmethod
-    def test_older_done_items_are_right_status(index_view_model: IndexViewModel):
-        assert all(item.status == 'Completed' for item in index_view_model.older_done_items)
+
+def test_done_items_is_right_length(index_view_model: IndexViewModel):
+    assert len(index_view_model.done_items) == 5
+
+
+def test_done_items_are_right_status(index_view_model: IndexViewModel):
+    assert all(item.status == 'Done' for item in index_view_model.done_items)
+
+
+def test_show_all_done_items_is_right_bool():
+    view_model_a = IndexViewModel([], True)
+    view_model_b = IndexViewModel([], False)
+    assert view_model_a.show_all_done_items
+    assert not view_model_b.show_all_done_items
+
+
+def test_recently_done_items_is_right_length(index_view_model: IndexViewModel):
+    assert len(index_view_model.recent_done_items) == 2
+
+
+def test_recently_done_items_are_right_status(index_view_model: IndexViewModel):
+    assert all(item.status == 'Done' for item in index_view_model.recent_done_items)

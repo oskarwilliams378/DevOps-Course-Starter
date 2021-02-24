@@ -24,28 +24,26 @@ class IndexViewModel:
     @property
     def to_do_items(self) -> List[Item]:
         items = sorted(self._items, key=lambda item: item.due_date, reverse=True)
-        return [item for item in items if item.status == "Not Started"]
+        return [item for item in items if item.status == "To Do"]
 
     @property
     def doing_items(self) -> List[Item]:
         items = sorted(self._items, key=lambda item: item.due_date, reverse=True)
-        return [item for item in items if item.status == "In Progress"]
+        return [item for item in items if item.status == "Doing"]
 
     @property
     def done_items(self) -> List[Item]:
         items = sorted(self._items, key=lambda item: item.due_date, reverse=True)
-        return [item for item in items if item.status == "Completed"]
+        return [item for item in items if item.status == "Done"]
 
     @property
     def recent_done_items(self) -> List[Item]:
         items = sorted(self._items, key=lambda item: item.due_date, reverse=True)
+        print(items)
         return [item for item in items if
-                item.status == "Completed"
-                and item.completed_on == datetime.date(datetime.today().replace(tzinfo=None))]
+                item.status == "Done"
+                and datetime.date(item.completed_on) == datetime.date(self.today())]
 
-    @property
-    def older_done_items(self) -> List[Item]:
-        items = sorted(self._items, key=lambda item: item.due_date, reverse=True)
-        return [item for item in items if
-                item.status == "Completed"
-                and item.completed_on < datetime.date(datetime.today().replace(tzinfo=None))]
+    @staticmethod
+    def today():
+        return datetime.today().replace(tzinfo=None)

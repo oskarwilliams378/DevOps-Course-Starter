@@ -76,11 +76,14 @@
                             </li>
                         {% endfor %}
                     </ul>
-
-                                        <button name="show_completed" value="{{ view_model.show_all_done_items }}" class="btn btn-danger col-md-2"
-                                                formaction="/ShowCompleted">
-                                            Show all completed tasks
-                                        </button>
+                    <button name="show_completed" value="{{ view_model.show_all_done_items }}" class="btn btn-danger col-md-2"
+                            formaction="/ShowCompleted">
+                        {% if not view_model.show_all_done_items %}
+                            Show all completed tasks
+                        {% else %}
+                            Show recently completed tasks
+                        {% endif %}
+                    </button>
                 </div>
             </div>
         </div>

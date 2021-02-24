@@ -1,30 +1,20 @@
-from dateutil import parser
 from datetime import datetime
 
 
 class Item(object):
-
-    def __init__(self, card, to_do_list, doing_list, done_list):
-        self.id = card['id']
+    def __init__(self, card):
+        self.id = card['_id']
         self.title = card['name']
         self.description = card['desc']
-        if card['due']:
-            date = parser.isoparse(card['due']).replace(tzinfo=None)
-            self.due_date = datetime.date(date)
-            self.due_date_string = date.strftime('%d/%m/%Y')
-        else:
-            self.due_date = datetime.date(datetime.today().replace(tzinfo=None))
-        self.deleted = False
-        if card['dateLastActivity']:
-            date = parser.isoparse(card['dateLastActivity']).replace(tzinfo=None)
-            self.completed_on = datetime.date(date)
-            self.completed_on_string = date.strftime('%d/%m/%Y')
+        self.status = card['status']
+        self.deleted = card['deleted']
 
-        if card['idList'] == to_do_list['id']:
-            self.status = 'Not Started'
-        elif card['idList'] == doing_list['id']:
-            self.status = 'In Progress'
-        elif card['idList'] == done_list['id']:
-            self.status = 'Completed'
+        if card['due'] != '':
+            self.due_date_string = datetime.strptime(card['due'], '%m/%d/%Y').strftime('%d/%m/%Y')
+            self.due_date = datetime.date(datetime.strptime(self.due_date_string, '%d/%m/%Y'))
         else:
-            self.deleted = True
+            self.due_date = datetime.date(datetime.today())
+
+        if self.status == "Done":
+            self.completed_on = card['completedOn']
+            self.completed_on_string = card['completedOn'].strftime('%d/%m/%Y')
