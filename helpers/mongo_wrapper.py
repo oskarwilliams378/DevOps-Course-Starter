@@ -13,7 +13,7 @@ class MongoWrapper:
 
     @staticmethod
     def _create_client(database_name: str):
-        username = os.environ['USERNAME']
+        username = os.environ['DB_USER']
         password = os.environ['PASSWORD']
         mongo_url = os.environ['MONGO_URL']
         return pymongo.MongoClient(f"mongodb+srv://{username}:{password}@{mongo_url}/{database_name}?retryWrites=true&w=majority")
@@ -55,7 +55,6 @@ class MongoWrapper:
 
     def _update_for_id(self, item_id, new_values):
         query = {"_id": ObjectId(item_id)}
-        print(item_id)
         return self._db.cards.update_one(query, new_values)
 
     def drop_database(self):
@@ -63,9 +62,4 @@ class MongoWrapper:
 
     @classmethod
     def create_database(cls, name: str) -> "MongoWrapper":
-        return MongoWrapper(name)
-
-
-if __name__ == "__main__":
-    x = MongoWrapper("")
-    x.create_database(name="test")
+        return cls(name)

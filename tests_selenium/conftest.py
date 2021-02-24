@@ -22,7 +22,7 @@ def test_app():
     file_path = find_dotenv('.env')
     load_dotenv(file_path, override=True)
     # construct the new application
-    mongo_db = MongoWrapper("").create_database("SeleniumTest")
+    mongo_db = MongoWrapper.create_database("SeleniumTest")
     os.environ['DEFAULT_DATABASE'] = "SeleniumTest"
     application = app.create_app()
     # start the app in its own thread.
