@@ -11,7 +11,7 @@ script:
   - echo "$DOCKER_PASSWORD" | docker login --username oskwil --password-stdin
   - docker build --target test --tag todo-app:test .
   - docker run todo-app:test tests
-  - docker run -e DB_USER -e PASSWORD -e MONGO_URL -e SECRET_KEY todo-app:test tests_selenium
+  - docker run -e DB_USER -e PASSWORD -e MONGO_URL -e SECRET_KEY -e CLIENT_ID -e CLIENT_SECRET todo-app:test tests_selenium
 
 before_deploy:
   - echo "$DOCKER_PASSWORD" | docker login --username oskwil --password-stdin
