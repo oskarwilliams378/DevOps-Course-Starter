@@ -5,7 +5,9 @@
     <div class="jumbotron">
         <h1 class="display-4">To-Do App</h1>
         <p class="lead">Just another to-do app.</p>
-        <a href="AddItem" class="btn btn-success col-md-2">Add another item</a>
+        {% if view_model.is_writer %}
+            <a href="AddItem" class="btn btn-success col-md-2">Add another item</a>
+        {% endif %}
     </div>
 
     <form action="/StartItem" method="post">
@@ -27,9 +29,11 @@
                                     <div class="col-md-10">
                                         <b>{{ item.title }}</b> -- {{ item.status }}
                                         <p>{{ item.description }}</p>
+                                        {% if view_model.is_writer %}
                                             <button name="id" value="{{ item.id }}" class="btn btn-primary col-sm-2">
                                                 Start task
                                             </button>
+                                        {% endif %}
                                     </div>
                                     <div class="col-md-2" style="text-align: right">
                                         <b>{{ item.due_date_string }}</b>
@@ -43,10 +47,12 @@
                                     <div class="col-md-10">
                                         <b>{{ item.title }}</b> -- {{ item.status }}
                                         <p>{{ item.description }}</p>
-                                            <button name="id" value="{{ item.id }}" class="btn btn-success col-md-2"
-                                                    formaction="/CompleteItem">
-                                                Complete task
-                                            </button>
+                                            {% if view_model.is_writer %}
+                                                <button name="id" value="{{ item.id }}" class="btn btn-success col-md-2"
+                                                        formaction="/CompleteItem">
+                                                    Complete task
+                                                </button>
+                                            {% endif %}
                                     </div>
                                     <div class="col-md-2" style="text-align: right">
                                         <b>{{ item.due_date_string }}</b>
@@ -61,13 +67,17 @@
                                     <div class="col-md-10">
                                         <b>{{ item.title }}</b> -- {{ item.status }}
                                         <p>{{ item.description }}</p>
-                                        <button name="id" value="{{ item.id }}" class="btn btn-secondary col-md-2">
-                                            Restart task
-                                        </button>
-                                        <button name="id" value="{{ item.id }}" class="btn btn-danger col-md-2"
-                                                formaction="/RemoveItem">
-                                            Remove task
-                                        </button>
+                                        {% if view_model.is_writer %}
+                                            <button name="id" value="{{ item.id }}" class="btn btn-secondary col-md-2">
+                                                Restart task
+                                            </button>
+                                        {% endif %}
+                                        {% if view_model.is_writer %}
+                                            <button name="id" value="{{ item.id }}" class="btn btn-danger col-md-2"
+                                                    formaction="/RemoveItem">
+                                                Remove task
+                                            </button>
+                                        {% endif %}
                                     </div>
                                     <div class="col-md-2" style="text-align: right">
                                         <b>{{ item.due_date_string }}</b>

@@ -33,7 +33,7 @@ def index_view_model():
         item = Item(card)
         items.append(item)
 
-    return IndexViewModel(items, True)
+    return IndexViewModel(items, True, True)
 
 
 @pytest.fixture(autouse=True)
@@ -69,8 +69,8 @@ def test_done_items_are_right_status(index_view_model: IndexViewModel):
 
 
 def test_show_all_done_items_is_right_bool():
-    view_model_a = IndexViewModel([], True)
-    view_model_b = IndexViewModel([], False)
+    view_model_a = IndexViewModel([], True, True)
+    view_model_b = IndexViewModel([], False, True)
     assert view_model_a.show_all_done_items
     assert not view_model_b.show_all_done_items
 

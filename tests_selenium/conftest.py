@@ -25,6 +25,7 @@ def test_app():
     mongo_db = MongoWrapper.create_database("SeleniumTest")
     os.environ['DEFAULT_DATABASE'] = "SeleniumTest"
     application = app.create_app()
+    application.config.update(dict(LOGIN_DISABLED=True))
     # start the app in its own thread.
     thread = Thread(target=lambda: application.run(use_reloader=False))
     thread.daemon = True

@@ -1,8 +1,12 @@
+from unittest import mock
 import pytest
+from classes.user import User
 from helpers.mongo_wrapper import MongoWrapper
 import mongomock
 from datetime import datetime
 from classes.index_view_model import IndexViewModel
+
+user_with_write = User('47484139')
 
 todays_date = datetime(2001, 1, 10)
 old_date = datetime(2001, 1, 7)
@@ -50,6 +54,7 @@ def mock_datetime_today(monkeypatch):
     monkeypatch.setattr(IndexViewModel, "today", datetime_today)
 
 
+@mock.patch('flask_login.utils._get_user', mock.MagicMock(return_value=user_with_write))
 def test_index_page(client):
     response = client.get('/')
     assert response.status_code == 200
@@ -58,6 +63,7 @@ def test_index_page(client):
     assert "desc 4" in response_data
 
 
+@mock.patch('flask_login.utils._get_user', mock.MagicMock(return_value=user_with_write))
 def test_add_item_page(client):
     response = client.get('/AddItem')
     assert response.status_code == 200
@@ -67,6 +73,7 @@ def test_add_item_page(client):
     assert "Due date" in response_data
 
 
+@mock.patch('flask_login.utils._get_user', mock.MagicMock(return_value=user_with_write))
 def test_add_item_page_save(client):
     response = client.post('/AddItem/Save', data=dict(
         title='Title',
@@ -75,6 +82,7 @@ def test_add_item_page_save(client):
     assert response.status_code == 302
 
 
+@mock.patch('flask_login.utils._get_user', mock.MagicMock(return_value=user_with_write))
 def test_start_item(client):
     response = client.post('/StartItem', data=dict(
         id='000000000000000000000001'
@@ -82,6 +90,7 @@ def test_start_item(client):
     assert response.status_code == 302
 
 
+@mock.patch('flask_login.utils._get_user', mock.MagicMock(return_value=user_with_write))
 def test_complete_item(client):
     response = client.post('/CompleteItem', data=dict(
         id='000000000000000000000001'
@@ -89,6 +98,7 @@ def test_complete_item(client):
     assert response.status_code == 302
 
 
+@mock.patch('flask_login.utils._get_user', mock.MagicMock(return_value=user_with_write))
 def test_remove_item(client):
     response = client.post('/RemoveItem', data=dict(
         id='000000000000000000000001'

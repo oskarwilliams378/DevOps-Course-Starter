@@ -5,9 +5,10 @@ from classes.to_do_item import Item
 
 class IndexViewModel:
 
-    def __init__(self, items: List[Item], show_completed: bool):
+    def __init__(self, items: List[Item], show_completed: bool, is_writer: bool):
         self._items = items
         self._show_all_done_items = show_completed
+        self.is_writer = is_writer
 
     @property
     def items(self) -> List[Item]:
